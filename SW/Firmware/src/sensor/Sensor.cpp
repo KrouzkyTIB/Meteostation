@@ -35,5 +35,9 @@ void Sensor::init() {
     dht.begin();
 }
 
+float Sensor::getValueIfCorrect(float value) {
+    return 0;
+}
+
 
 

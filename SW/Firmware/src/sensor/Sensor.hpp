@@ -14,14 +14,18 @@ private:
     uint64_t lastMeasurementMillis;
     float temperature;
     float humidity;
-    void updateMeasurements();
     DHT dht;
+
+private:
+    void updateMeasurements();
+    float getValueIfCorrect(float value);
 
 public:
     explicit Sensor(uint8_t pinNumber);
     float getTemperature();
     float getHumidity();
     void init();
+    Sensor() = delete;
 
 };
 
