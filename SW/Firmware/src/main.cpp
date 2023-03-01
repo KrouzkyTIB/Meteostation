@@ -1,8 +1,15 @@
 #include <Arduino.h>
+#include "Sensor/Sensor.hpp"
+#include "PinDefinitions.hpp"
+
+Sensor indoorSensor(INDOOR_SENSOR_PIN);
+
 void setup() {
-// write your initialization code here
+    indoorSensor.init();
+    Serial.begin(115200);
 }
 
 void loop() {
-// write your code here
+    Serial.printf("Temp: %f, Humi: %f\n", indoorSensor.getTemperature(), indoorSensor.getHumidity());
+    delay(500);
 }

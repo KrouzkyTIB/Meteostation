@@ -1,0 +1,10 @@
+//
+// Created by jiri on 1.3.23.
+//
+
+#ifndef FIRMWARE_PINDEFINITIONS_HPP
+#define FIRMWARE_PINDEFINITIONS_HPP
+
+#define INDOOR_SENSOR_PIN 12
+
+#endif //FIRMWARE_PINDEFINITIONS_HPP
