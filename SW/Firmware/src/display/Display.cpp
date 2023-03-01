@@ -16,6 +16,7 @@
 #define INDOOR_DISPLAY_LINE 0
 #define OUTDOOR_DISPLAY_LINE 1
 #define DEGREE_CHAR ((char)0xDF)
+#define REFRESH_RATE_MS 2000
 
 
 const std::string Display::INDOOR_LABEL = "In";
@@ -25,7 +26,9 @@ Display::Display(Sensor &indoorSensor, Sensor &outdoorSensor) : display(DISPLAY_
                                                                         DISPLAY_WIDTH,
                                                                         DISPLAY_HEIGHT),
                                                                 indoorSensor(indoorSensor),
-                                                                outdoorSensor(outdoorSensor) {}
+                                                                outdoorSensor(outdoorSensor) {
+    this->lastUpdateMillis = 0;
+}
 
 std::string Display::formatValue(float value, int precision) {
     std::stringstream stream;
@@ -46,17 +49,20 @@ std::string Display::prepareDataForLine(const std::string &label, float temperat
 }
 
 void Display::update() {
-    Serial.printf("Update function %f %f\n", this->indoorSensor.getTemperature(), this->indoorSensor.getHumidity());
-    std::string indoorDataLine = prepareDataForLine(INDOOR_LABEL,
-                                                    this->indoorSensor.getTemperature(),
-                                                    this->indoorSensor.getHumidity());
-    std::string outdoorDataLine = prepareDataForLine(OUTDOOR_LABEL,
-                                                     this->outdoorSensor.getTemperature(),
-                                                     this->outdoorSensor.getHumidity());
-    display.setCursor(0, INDOOR_DISPLAY_LINE);
-    display.printstr(indoorDataLine.c_str());
-    display.setCursor(0, OUTDOOR_DISPLAY_LINE);
-    display.printstr(outdoorDataLine.c_str());
+    if (this->lastUpdateMillis + REFRESH_RATE_MS <= millis() || millis() < this->lastUpdateMillis) {
+        this->lastUpdateMillis = millis();
+        Serial.printf("Update\n");
+        std::string indoorDataLine = prepareDataForLine(INDOOR_LABEL,
+                                                        this->indoorSensor.getTemperature(),
+                                                        this->indoorSensor.getHumidity());
+        std::string outdoorDataLine = prepareDataForLine(OUTDOOR_LABEL,
+                                                         this->outdoorSensor.getTemperature(),
+                                                         this->outdoorSensor.getHumidity());
+        display.setCursor(0, INDOOR_DISPLAY_LINE);
+        display.printstr(indoorDataLine.c_str());
+        display.setCursor(0, OUTDOOR_DISPLAY_LINE);
+        display.printstr(outdoorDataLine.c_str());
+    }
 }
 
 void Display::turnBacklightOff() {

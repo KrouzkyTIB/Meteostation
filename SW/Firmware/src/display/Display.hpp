@@ -18,7 +18,7 @@ private:
     LiquidCrystal_I2C display;
     Sensor &indoorSensor;
     Sensor &outdoorSensor;
-
+    uint64_t lastUpdateMillis;
 private:
     static std::string formatValue(float value, int precision);
     static std::string prepareDataForLine(const std::string &label, float temperature, float humidity);

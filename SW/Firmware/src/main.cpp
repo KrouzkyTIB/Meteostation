@@ -16,7 +16,5 @@ void setup() {
 }
 
 void loop() {
-    Serial.printf("Temp: %f, Humi: %f\n", indoorSensor.getTemperature(), indoorSensor.getHumidity());
     display.update();
-    delay(2000);
 }
