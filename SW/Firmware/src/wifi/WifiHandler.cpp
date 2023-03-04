@@ -7,7 +7,9 @@
 #include "ESP8266WiFi.h"
 #include "PinDefinitions.hpp"
 
+
 #define WIFI_CONFIG_FILE "wifi_config"
+#define SOFT_AP_SSID "TIB_meteo"
 
 const IPAddress WifiHandler::subnet(10, 0, 0, 0);
 const IPAddress WifiHandler::gateway(10, 0, 0, 255);
@@ -35,4 +37,6 @@ void WifiHandler::init() {
 
     WiFi.mode(WiFiMode_t::WIFI_AP);
     WiFi.softAPConfig(ipAddress, gateway, subnet);
+    WiFi.softAP(SOFT_AP_SSID);
+    Serial.println(WiFi.localIP());
 }
