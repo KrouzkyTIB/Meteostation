@@ -24,6 +24,7 @@ std::vector<std::string> filesystem::readAllLinesFromFile(const char *filename) 
         }
         readChar = file.read();
     }
+    file.close();
     return lines;
 }
 
@@ -36,6 +37,7 @@ std::string filesystem::readFile(const char *filename) {
         buffer += (char) readChar;
         readChar = file.read();
     }
+    file.close();
     return buffer;
 }
 

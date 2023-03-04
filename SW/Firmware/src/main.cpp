@@ -4,6 +4,7 @@
 #include "display/Display.hpp"
 #include "filesystem/Filesystem.hpp"
 #include "wifi/WifiHandler.hpp"
+#include "server/ServerWrapper.hpp"
 
 Sensor indoorSensor(INDOOR_SENSOR_PIN);
 Sensor outdoorSensor(OUTDOOR_SENSOR_PIN);
@@ -17,10 +18,12 @@ void setup() {
     indoorSensor.init();
     outdoorSensor.init();
     wifiHandler.init();
+    ServerWrapper::init(&wifiHandler);
     display.init();
     display.turnBacklightOn();
 }
 
 void loop() {
     display.update();
+    ServerWrapper::handleClient();
 }

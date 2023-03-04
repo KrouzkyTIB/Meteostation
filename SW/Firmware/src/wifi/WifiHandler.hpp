@@ -7,6 +7,7 @@
 #include <ESP8266WiFi.h>
 #include <string>
 
+
 class WifiHandler {
 private:
     static const IPAddress ipAddress;
@@ -14,8 +15,12 @@ private:
     static const IPAddress subnet;
     std::string ssid;
     std::string password;
+    bool connectedToWifi;
 public:
     void init();
+    WifiHandler();
+
+    [[nodiscard]] bool isConnectedToWifi() const;
 };
 
 

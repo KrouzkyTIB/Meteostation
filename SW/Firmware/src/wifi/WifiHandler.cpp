@@ -11,9 +11,10 @@
 #define WIFI_CONFIG_FILE "wifi_config"
 #define SOFT_AP_SSID "TIB_meteo"
 
-const IPAddress WifiHandler::subnet(10, 0, 0, 0);
-const IPAddress WifiHandler::gateway(10, 0, 0, 255);
-const IPAddress WifiHandler::ipAddress(10, 0, 0, 10);
+
+const IPAddress WifiHandler::ipAddress(192, 168, 0, 10);
+const IPAddress WifiHandler::gateway(192, 168, 0, 9);
+const IPAddress WifiHandler::subnet(255, 255, 255, 0);
 
 void WifiHandler::init() {
 
@@ -32,11 +33,20 @@ void WifiHandler::init() {
         digitalWrite(WIFI_CONNECTED_PIN, HIGH);
         delay(1000);
         digitalWrite(WIFI_CONNECTED_PIN, LOW);
+        this->connectedToWifi = true;
         return;
     }
 
     WiFi.mode(WiFiMode_t::WIFI_AP);
     WiFi.softAPConfig(ipAddress, gateway, subnet);
     WiFi.softAP(SOFT_AP_SSID);
-    Serial.println(WiFi.localIP());
+    Serial.println(WiFi.softAPIP());
+}
+
+WifiHandler::WifiHandler() : connectedToWifi(false) {
+
+}
+
+bool WifiHandler::isConnectedToWifi() const {
+    return this->connectedToWifi;
 }
