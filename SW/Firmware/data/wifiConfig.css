@@ -5,24 +5,38 @@ h1 {
 h2{
     font-size: 30px;
     letter-spacing: 0.01em;
+    text-align: center;
+    width: 100%;
 }
 
-div.data-wrapper {
+div.form-center-wrapper {
     text-align: center;
     width: 100%;
     margin: auto;
 }
-
-p{
-    line-height: 30px;
-    text-align: center;
+label{
+    font-size: 23px;
+    margin-bottom: 5px;
 }
 
-div.paragraph-center-wrapper{
-    width: 14vw;
-    margin: auto;
+
+input{
+    width: 15vw;
+    height: 40px;
+    font-size: 20px;
+    margin-bottom: 2vh;
+    border-radius: 5px;
+    border: 1px solid black;
+    transition-duration: 0.3s;
 }
-button.set-status-button{
+input:hover{
+    background-color: lightblue;
+}
+input:focus{
+    background-color: lightblue;
+}
+
+button{
     text-align: center;
     width: 10vw;
     margin-bottom: 1vh;
@@ -34,16 +48,12 @@ button.set-status-button{
     border-radius: 15px;
     transition-duration: 0.2s;
 }
-button.set-status-button:hover{
+button:hover{
     background-color: black;
     color: white;
 }
 
-button.set-status-button:active{
+button:active{
     color: black;
     background-color: lightblue;
-}
-div.settings-buttons-wrapper{
-    width: 100%;
-    text-align: center;
 }
