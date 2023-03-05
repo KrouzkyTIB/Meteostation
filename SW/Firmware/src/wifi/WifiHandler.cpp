@@ -38,6 +38,7 @@ void WifiHandler::init() {
     WiFi.mode(WiFiMode_t::WIFI_AP);
     WiFi.softAPConfig(ipAddress, gateway, subnet);
     WiFi.softAP(SOFT_AP_SSID);
+    while (WiFi.softAPIP() != ipAddress);
     showWifiSettings();
 }
 
@@ -96,10 +97,10 @@ void WifiHandler::showWifiSettings() {
 }
 
 void WifiHandler::resetSettings() {
-    display.showMessage(RESETTING_WIFI_LABEL_UPPER, RESETTING_WIFI_LABEL_UPPER);
+    display.showMessage(RESETTING_WIFI_LABEL_UPPER, RESETTING_WIFI_LABEL_LOWER);
     filesystem::deleteFile(WIFI_CONFIG_FILE);
     this->connectedToWifi = false;
-    WiFi.disconnect(true);
+    WiFi.disconnect(false);
     this->init();
 }
 

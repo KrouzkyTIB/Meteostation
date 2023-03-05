@@ -55,7 +55,6 @@ void Display::update() {
     if (this->lastUpdateMillis + REFRESH_RATE_MS <= millis() || millis() < this->lastUpdateMillis) {
         if (millis() > this->showIpUntilMillis) {
             this->lastUpdateMillis = millis();
-            Serial.printf("Update\n");
             std::string indoorDataLine = prepareDataForLine(INDOOR_LABEL,
                                                             this->indoorSensor.getTemperature(),
                                                             this->indoorSensor.getHumidity());
