@@ -16,8 +16,6 @@
 #define INDOOR_HUMIDITY_TAG std::string("<%=indoorHumidity%>")
 #define OUTDOOR_TEMPERATURE_TAG std::string("<%=outdoorTemperature%>")
 #define OUTDOOR_HUMIDITY_TAG std::string("<%=outdoorHumidity%>")
-#define CONFIG_CORRECT_COUNT 2
-
 ESP8266WebServer ServerWrapper::webServer(PORT);
 std::string ServerWrapper::statsJsBuffer;
 std::string ServerWrapper::statsCssBuffer;
@@ -96,16 +94,12 @@ void ServerWrapper::serveConfigCss() {
 }
 
 void ServerWrapper::setWifiCredentials() {
-    Serial.printf("Handling: %d\n", webServer.args());
-    Serial.println(webServer.arg("asdasdadadad"));
 
     if (!webServer.arg("ssid").isEmpty()) {
         std::string ssid = webServer.arg("ssid").c_str();
         std::string password = webServer.arg("password").c_str();
-        Serial.println(ssid.c_str());
-        Serial.println(password.c_str());
         wifiHandler->setNewConfig(ssid, password);
-    }else{
+    } else {
         serveConfigPage();
     }
 }
