@@ -16,8 +16,12 @@ private:
     std::string ssid;
     std::string password;
     bool connectedToWifi;
+
+private:
+    void waitUntilConnectedToWifi();
 public:
     void init();
+    void setNewConfig(const std::string &newSsid, const std::string &newPassword);
     WifiHandler();
 
     [[nodiscard]] bool isConnectedToWifi() const;

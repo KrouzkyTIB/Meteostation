@@ -13,6 +13,7 @@ WifiHandler wifiHandler;
 
 
 void setup() {
+    pinMode(WIFI_CONNECTED_PIN, OUTPUT);
     Serial.begin(115200);
     filesystem::init();
     indoorSensor.init();

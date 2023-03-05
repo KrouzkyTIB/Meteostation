@@ -20,20 +20,15 @@ void WifiHandler::init() {
 
     if (filesystem::doesFileExists(WIFI_CONFIG_FILE)) {
         std::vector<std::string> configLines = filesystem::readAllLinesFromFile(WIFI_CONFIG_FILE);
+        for(auto l : configLines){
+            Serial.println(l.c_str());
+        }
         this->ssid = configLines.at(0);
         this->password = configLines.at(1);
+        Serial.printf("ssid: %s password: %s |\n", this->ssid.c_str(), this->password.c_str());
         WiFi.begin(this->ssid.c_str(), this->password.c_str());
         WiFi.mode(WiFiMode_t::WIFI_STA);
-        while (WiFi.status() != WL_CONNECTED) {
-            digitalWrite(WIFI_CONNECTED_PIN, HIGH);
-            delay(50);
-            digitalWrite(WIFI_CONNECTED_PIN, LOW);
-            delay(50);
-        }
-        digitalWrite(WIFI_CONNECTED_PIN, HIGH);
-        delay(1000);
-        digitalWrite(WIFI_CONNECTED_PIN, LOW);
-        this->connectedToWifi = true;
+        waitUntilConnectedToWifi();
         return;
     }
 
@@ -49,4 +44,31 @@ WifiHandler::WifiHandler() : connectedToWifi(false) {
 
 bool WifiHandler::isConnectedToWifi() const {
     return this->connectedToWifi;
+}
+
+void WifiHandler::setNewConfig(const std::string &newSsid, const std::string &newPassword) {
+    this->ssid = newSsid;
+    this->password = newPassword;
+    WiFi.softAPdisconnect(true);
+    WiFi.mode(WiFiMode_t::WIFI_STA);
+    WiFi.begin(this->ssid.c_str(), this->password.c_str());
+    waitUntilConnectedToWifi();
+    this->connectedToWifi = true;
+    std::vector<std::string> config;
+    config.push_back(this->ssid);
+    config.push_back(this->password);
+    filesystem::saveLinesToFile(WIFI_CONFIG_FILE, config);
+}
+
+void WifiHandler::waitUntilConnectedToWifi() {
+    while (WiFi.status() != WL_CONNECTED) {
+        digitalWrite(WIFI_CONNECTED_PIN, HIGH);
+        delay(50);
+        digitalWrite(WIFI_CONNECTED_PIN, LOW);
+        delay(50);
+    }
+    digitalWrite(WIFI_CONNECTED_PIN, HIGH);
+    delay(1000);
+    digitalWrite(WIFI_CONNECTED_PIN, LOW);
+    this->connectedToWifi = true;
 }

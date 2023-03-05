@@ -16,7 +16,7 @@
 #define INDOOR_DISPLAY_LINE 0
 #define OUTDOOR_DISPLAY_LINE 1
 #define DEGREE_CHAR ((char)0xDF)
-#define REFRESH_RATE_MS 2000
+#define REFRESH_RATE_MS 10000
 
 
 const std::string Display::INDOOR_LABEL = "In";

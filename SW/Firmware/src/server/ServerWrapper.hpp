@@ -30,6 +30,7 @@ private:
     static void serveStatsCss();
     static void serveStatsJs();
     static void serveConfigCss();
+    static void setWifiCredentials();
     static void replace(std::string &buffer, std::string pattern, std::string newValue);
 public:
     static void init(WifiHandler *wifiHandler, Sensor *indoorSensor, Sensor *outdoorSensor);

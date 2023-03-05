@@ -13,6 +13,7 @@ namespace filesystem{
     std::vector<std::string> readAllLinesFromFile(const char * filename);
     std::string readFile(const char * filename);
     bool doesFileExists(const char * filename);
+    void saveLinesToFile(const char * filename, std::vector<std::string> &lines);
 }
 
 
