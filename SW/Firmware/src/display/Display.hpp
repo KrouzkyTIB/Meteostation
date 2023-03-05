@@ -20,6 +20,7 @@ private:
     Sensor &outdoorSensor;
     uint64_t lastUpdateMillis;
     uint64_t showIpUntilMillis;
+    bool backlightOn;
 private:
     static std::string formatValue(float value, int precision);
 
@@ -40,7 +41,12 @@ public:
     void init();
 
     void showIpWithLabel(const std::string &ip, const char *label);
-    void showMessage(const char * upperLine, const char * lowerLine);
+
+    void showMessage(const char *upperLine, const char *lowerLine);
+
+    bool isBacklightOn() const;
+
+    void toggleBacklight();
 
 };
 

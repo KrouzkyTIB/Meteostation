@@ -21,7 +21,7 @@ void setup() {
     display.init();
     display.turnBacklightOn();
     wifiHandler.init();
-    ServerWrapper::init(&wifiHandler, &indoorSensor, &outdoorSensor);
+    ServerWrapper::init(&wifiHandler, &indoorSensor, &outdoorSensor, &display);
 }
 
 void loop() {

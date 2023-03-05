@@ -16,6 +16,10 @@
 #define INDOOR_HUMIDITY_TAG std::string("<%=indoorHumidity%>")
 #define OUTDOOR_TEMPERATURE_TAG std::string("<%=outdoorTemperature%>")
 #define OUTDOOR_HUMIDITY_TAG std::string("<%=outdoorHumidity%>")
+#define DISPLAY_BACKLIGHT_TAG std::string("<%=lcdBacklight%>")
+#define TURN_BACKLIGHT_ON "Zapnout podsvícení"
+#define TURN_BACKLIGHT_OFF "Vypnout podsvícení"
+
 ESP8266WebServer ServerWrapper::webServer(PORT);
 std::string ServerWrapper::statsJsBuffer;
 std::string ServerWrapper::statsCssBuffer;
@@ -25,12 +29,14 @@ std::string ServerWrapper::wifiConfigPageBuffer;
 WifiHandler *ServerWrapper::wifiHandler;
 Sensor *ServerWrapper::indoorSensor;
 Sensor *ServerWrapper::outdoorSensor;
+Display *ServerWrapper::display;
 
 
-void ServerWrapper::init(WifiHandler *wifiHandler, Sensor *indoorSensor, Sensor *outdoorSensor) {
+void ServerWrapper::init(WifiHandler *wifiHandler, Sensor *indoorSensor, Sensor *outdoorSensor, Display *display) {
     ServerWrapper::wifiHandler = wifiHandler;
     ServerWrapper::outdoorSensor = outdoorSensor;
     ServerWrapper::indoorSensor = indoorSensor;
+    ServerWrapper::display = display;
     statsCssBuffer = filesystem::readFile(STATS_CSS_FILENAME);
     statsJsBuffer = filesystem::readFile(STATS_JS_FILENAME);
     statsPageBuffer = filesystem::readFile(STATS_PAGE_FILENAME);
@@ -41,6 +47,7 @@ void ServerWrapper::init(WifiHandler *wifiHandler, Sensor *indoorSensor, Sensor 
     webServer.on("/stats.js", HTTPMethod::HTTP_GET, serveStatsJs);
     webServer.on("/stats.css", HTTPMethod::HTTP_GET, serveStatsCss);
     webServer.on("/wifiConfig.css", HTTPMethod::HTTP_GET, serveConfigCss);
+    webServer.on("/toggle-lcd", HTTPMethod::HTTP_POST, toggleDisplayBacklight);
     webServer.begin();
 }
 
@@ -82,6 +89,7 @@ void ServerWrapper::serveStatsPage() {
     replace(pageWithData, INDOOR_HUMIDITY_TAG, truncateFloatToTwoDigits(indoorSensor->getHumidity()));
     replace(pageWithData, OUTDOOR_TEMPERATURE_TAG, truncateFloatToTwoDigits(outdoorSensor->getTemperature()));
     replace(pageWithData, OUTDOOR_HUMIDITY_TAG, truncateFloatToTwoDigits(outdoorSensor->getHumidity()));
+    replace(pageWithData, DISPLAY_BACKLIGHT_TAG, display->isBacklightOn() ? TURN_BACKLIGHT_OFF : TURN_BACKLIGHT_ON);
     webServer.send(200, "text/html", pageWithData.c_str(), pageWithData.size());
 }
 
@@ -102,6 +110,11 @@ void ServerWrapper::setWifiCredentials() {
     } else {
         serveConfigPage();
     }
+}
+
+void ServerWrapper::toggleDisplayBacklight() {
+    display->toggleBacklight();
+    webServer.send(204, "application/json", "");
 }
 
 

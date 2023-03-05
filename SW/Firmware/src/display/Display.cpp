@@ -27,7 +27,8 @@ Display::Display(Sensor &indoorSensor, Sensor &outdoorSensor) : display(DISPLAY_
                                                                         DISPLAY_WIDTH,
                                                                         DISPLAY_HEIGHT),
                                                                 indoorSensor(indoorSensor),
-                                                                outdoorSensor(outdoorSensor) {
+                                                                outdoorSensor(outdoorSensor),
+                                                                backlightOn(true) {
     this->lastUpdateMillis = 0;
     this->showIpUntilMillis = 0;
 }
@@ -72,10 +73,12 @@ void Display::update() {
 
 void Display::turnBacklightOff() {
     display.noBacklight();
+    this->backlightOn = false;
 }
 
 void Display::turnBacklightOn() {
     display.backlight();
+    this->backlightOn = true;
 }
 
 void Display::init() {
@@ -108,6 +111,19 @@ void Display::showMessage(const char *upperLine, const char *lowerLine) {
     display.setCursor(0, 1);
     display.printstr(centerText(lowerLine).c_str());
 }
+
+bool Display::isBacklightOn() const {
+    return backlightOn;
+}
+
+void Display::toggleBacklight() {
+    if (backlightOn) {
+        turnBacklightOff();
+    } else {
+        turnBacklightOn();
+    }
+}
+
 
 
 

@@ -22,6 +22,7 @@ private:
     static WifiHandler *wifiHandler;
     static Sensor *indoorSensor;
     static Sensor *outdoorSensor;
+    static Display *display;
 
 private:
     static void serveHtmlPage();
@@ -32,8 +33,9 @@ private:
     static void serveConfigCss();
     static void setWifiCredentials();
     static void replace(std::string &buffer, std::string pattern, std::string newValue);
+    static void toggleDisplayBacklight();
 public:
-    static void init(WifiHandler *wifiHandler, Sensor *indoorSensor, Sensor *outdoorSensor);
+    static void init(WifiHandler *wifiHandler, Sensor *indoorSensor, Sensor *outdoorSensor, Display *display);
     static void handleClient();
     static std::string truncateFloatToTwoDigits(float value);
 };
