@@ -13,6 +13,8 @@
 #define LOCAL_WIFI_LABEL "Local IP"
 #define DEFAULT_WIFI_LABEL "TIB meteo"
 #define CONNECTED_LABEL "Connected!"
+#define CONNECTING_LABEL_UPPER "Connecting to"
+#define CONNECTING_LABEL_LOWER "local WiFi"
 
 
 const IPAddress WifiHandler::ipAddress(192, 168, 0, 10);
@@ -25,7 +27,6 @@ void WifiHandler::init() {
         std::vector<std::string> configLines = filesystem::readAllLinesFromFile(WIFI_CONFIG_FILE);
         this->ssid = configLines.at(0);
         this->password = configLines.at(1);
-        Serial.printf("ssid: %s password: %s |\n", this->ssid.c_str(), this->password.c_str());
         WiFi.begin(this->ssid.c_str(), this->password.c_str());
         WiFi.mode(WiFiMode_t::WIFI_STA);
         waitUntilConnectedToWifi();
@@ -59,10 +60,11 @@ void WifiHandler::setNewConfig(const std::string &newSsid, const std::string &ne
     config.push_back(this->ssid);
     config.push_back(this->password);
     filesystem::saveLinesToFile(WIFI_CONFIG_FILE, config);
-    display.showIpWithLabel(getIp(), CONNECTED_LABEL);
+    showWifiSettings();
 }
 
 void WifiHandler::waitUntilConnectedToWifi() {
+    display.showMessage(CONNECTING_LABEL_UPPER, CONNECTING_LABEL_LOWER);
     while (WiFi.status() != WL_CONNECTED) {
         digitalWrite(WIFI_CONNECTED_PIN, HIGH);
         delay(50);
@@ -86,7 +88,7 @@ std::string WifiHandler::getIp() const {
 
 void WifiHandler::showWifiSettings() {
     if (this->isConnectedToWifi()) {
-        display.showIpWithLabel(getIp(), LOCAL_WIFI_LABEL);
+        display.showIpWithLabel(getIp(), CONNECTED_LABEL);
     } else {
         display.showIpWithLabel(getIp(), DEFAULT_WIFI_LABEL);
     }

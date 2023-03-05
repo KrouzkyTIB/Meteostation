@@ -40,6 +40,7 @@ public:
     void init();
 
     void showIpWithLabel(const std::string &ip, const char *label);
+    void showMessage(const char * upperLine, const char * lowerLine);
 
 };
 

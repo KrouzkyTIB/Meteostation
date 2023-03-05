@@ -101,6 +101,14 @@ std::string Display::centerText(const char *string) {
 
 }
 
+void Display::showMessage(const char *upperLine, const char *lowerLine) {
+    display.clear();
+    display.setCursor(0, 0);
+    display.printstr(centerText(upperLine).c_str());
+    display.setCursor(0, 1);
+    display.printstr(centerText(lowerLine).c_str());
+}
+
 
 
 
