@@ -18,16 +18,18 @@ private:
     static std::string statsCssBuffer;
     static std::string statsJsBuffer;
     static std::string wifiConfigPageBuffer;
-    static std::string wifiCssBuffer;
-    static std::string wifiJsBuffer;
+    static std::string wifiConfigCssBuffer;
     static WifiHandler *wifiHandler;
     static Sensor *indoorSensor;
     static Sensor *outdoorSensor;
 
 private:
     static void serveHtmlPage();
+    static void serveStatsPage();
+    static void serveConfigPage();
     static void serveStatsCss();
     static void serveStatsJs();
+    static void serveConfigCss();
     static void replace(std::string &buffer, std::string pattern, std::string newValue);
 public:
     static void init(WifiHandler *wifiHandler, Sensor *indoorSensor, Sensor *outdoorSensor);
