@@ -24,11 +24,8 @@ std::vector<std::string> filesystem::readAllLinesFromFile(const char *filename) 
         }
         readChar = file.read();
     }
-    if (!buffer.empty()) {
-        lines.emplace_back(buffer);
-    }
+    lines.emplace_back(buffer);
     file.close();
-
     return lines;
 }
 

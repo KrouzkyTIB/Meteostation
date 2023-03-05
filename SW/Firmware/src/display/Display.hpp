@@ -19,18 +19,27 @@ private:
     Sensor &indoorSensor;
     Sensor &outdoorSensor;
     uint64_t lastUpdateMillis;
+    uint64_t showIpUntilMillis;
 private:
     static std::string formatValue(float value, int precision);
+
     static std::string prepareDataForLine(const std::string &label, float temperature, float humidity);
+
+    static std::string centerText(const char *string);
 
 
 public:
     Display(Sensor &indoorSensor, Sensor &outdoorSensor);
+
     void turnBacklightOff();
+
     void turnBacklightOn();
+
     void update();
+
     void init();
 
+    void showIpWithLabel(const std::string &ip, const char *label);
 
 };
 

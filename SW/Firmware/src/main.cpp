@@ -9,7 +9,7 @@
 Sensor indoorSensor(INDOOR_SENSOR_PIN);
 Sensor outdoorSensor(OUTDOOR_SENSOR_PIN);
 Display display(indoorSensor, outdoorSensor);
-WifiHandler wifiHandler;
+WifiHandler wifiHandler(display);
 
 
 void setup() {
@@ -18,13 +18,18 @@ void setup() {
     filesystem::init();
     indoorSensor.init();
     outdoorSensor.init();
-    wifiHandler.init();
-    ServerWrapper::init(&wifiHandler, &indoorSensor, &outdoorSensor);
     display.init();
     display.turnBacklightOn();
+    wifiHandler.init();
+    ServerWrapper::init(&wifiHandler, &indoorSensor, &outdoorSensor);
 }
 
 void loop() {
     display.update();
     ServerWrapper::handleClient();
 }
+
+
+
+
+

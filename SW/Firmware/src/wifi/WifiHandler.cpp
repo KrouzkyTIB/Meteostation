@@ -10,6 +10,9 @@
 
 #define WIFI_CONFIG_FILE "wifi_config"
 #define SOFT_AP_SSID "TIB_meteo"
+#define LOCAL_WIFI_LABEL "Local IP"
+#define DEFAULT_WIFI_LABEL "TIB meteo"
+#define CONNECTED_LABEL "Connected!"
 
 
 const IPAddress WifiHandler::ipAddress(192, 168, 0, 10);
@@ -20,25 +23,23 @@ void WifiHandler::init() {
 
     if (filesystem::doesFileExists(WIFI_CONFIG_FILE)) {
         std::vector<std::string> configLines = filesystem::readAllLinesFromFile(WIFI_CONFIG_FILE);
-        for(auto l : configLines){
-            Serial.println(l.c_str());
-        }
         this->ssid = configLines.at(0);
         this->password = configLines.at(1);
         Serial.printf("ssid: %s password: %s |\n", this->ssid.c_str(), this->password.c_str());
         WiFi.begin(this->ssid.c_str(), this->password.c_str());
         WiFi.mode(WiFiMode_t::WIFI_STA);
         waitUntilConnectedToWifi();
+        showWifiSettings();
         return;
     }
 
     WiFi.mode(WiFiMode_t::WIFI_AP);
     WiFi.softAPConfig(ipAddress, gateway, subnet);
     WiFi.softAP(SOFT_AP_SSID);
-    Serial.println(WiFi.softAPIP());
+    showWifiSettings();
 }
 
-WifiHandler::WifiHandler() : connectedToWifi(false) {
+WifiHandler::WifiHandler(Display &display) : connectedToWifi(false), display(display) {
 
 }
 
@@ -58,6 +59,7 @@ void WifiHandler::setNewConfig(const std::string &newSsid, const std::string &ne
     config.push_back(this->ssid);
     config.push_back(this->password);
     filesystem::saveLinesToFile(WIFI_CONFIG_FILE, config);
+    display.showIpWithLabel(getIp(), CONNECTED_LABEL);
 }
 
 void WifiHandler::waitUntilConnectedToWifi() {
@@ -72,3 +74,23 @@ void WifiHandler::waitUntilConnectedToWifi() {
     digitalWrite(WIFI_CONNECTED_PIN, LOW);
     this->connectedToWifi = true;
 }
+
+std::string WifiHandler::getIp() const {
+    if (isConnectedToWifi()) {
+        return WiFi.localIP().toString().c_str();
+    } else {
+        return WiFi.softAPIP().toString().c_str();
+    }
+}
+
+
+void WifiHandler::showWifiSettings() {
+    if (this->isConnectedToWifi()) {
+        display.showIpWithLabel(getIp(), LOCAL_WIFI_LABEL);
+    } else {
+        display.showIpWithLabel(getIp(), DEFAULT_WIFI_LABEL);
+    }
+}
+
+
+

@@ -16,7 +16,8 @@
 #define INDOOR_DISPLAY_LINE 0
 #define OUTDOOR_DISPLAY_LINE 1
 #define DEGREE_CHAR ((char)0xDF)
-#define REFRESH_RATE_MS 10000
+#define REFRESH_RATE_MS 1000
+#define WIFI_SHOW_DELAY 15000L
 
 
 const std::string Display::INDOOR_LABEL = "In";
@@ -28,6 +29,7 @@ Display::Display(Sensor &indoorSensor, Sensor &outdoorSensor) : display(DISPLAY_
                                                                 indoorSensor(indoorSensor),
                                                                 outdoorSensor(outdoorSensor) {
     this->lastUpdateMillis = 0;
+    this->showIpUntilMillis = 0;
 }
 
 std::string Display::formatValue(float value, int precision) {
@@ -50,18 +52,21 @@ std::string Display::prepareDataForLine(const std::string &label, float temperat
 
 void Display::update() {
     if (this->lastUpdateMillis + REFRESH_RATE_MS <= millis() || millis() < this->lastUpdateMillis) {
-        this->lastUpdateMillis = millis();
-        Serial.printf("Update\n");
-        std::string indoorDataLine = prepareDataForLine(INDOOR_LABEL,
-                                                        this->indoorSensor.getTemperature(),
-                                                        this->indoorSensor.getHumidity());
-        std::string outdoorDataLine = prepareDataForLine(OUTDOOR_LABEL,
-                                                         this->outdoorSensor.getTemperature(),
-                                                         this->outdoorSensor.getHumidity());
-        display.setCursor(0, INDOOR_DISPLAY_LINE);
-        display.printstr(indoorDataLine.c_str());
-        display.setCursor(0, OUTDOOR_DISPLAY_LINE);
-        display.printstr(outdoorDataLine.c_str());
+        if (millis() > this->showIpUntilMillis) {
+            this->lastUpdateMillis = millis();
+            Serial.printf("Update\n");
+            std::string indoorDataLine = prepareDataForLine(INDOOR_LABEL,
+                                                            this->indoorSensor.getTemperature(),
+                                                            this->indoorSensor.getHumidity());
+            std::string outdoorDataLine = prepareDataForLine(OUTDOOR_LABEL,
+                                                             this->outdoorSensor.getTemperature(),
+                                                             this->outdoorSensor.getHumidity());
+            display.setCursor(0, INDOOR_DISPLAY_LINE);
+            display.printstr(indoorDataLine.c_str());
+            display.setCursor(0, OUTDOOR_DISPLAY_LINE);
+            display.printstr(outdoorDataLine.c_str());
+            this->showIpUntilMillis = 0;
+        }
     }
 }
 
@@ -77,6 +82,26 @@ void Display::init() {
     display.init();
     display.clear();
 }
+
+void Display::showIpWithLabel(const std::string &ip, const char *label) {
+    this->showIpUntilMillis = millis() + WIFI_SHOW_DELAY;
+    display.clear();
+    display.setCursor(0, 0);
+    display.printstr(centerText(label).c_str());
+    display.setCursor(0, 1);
+    display.printstr(centerText(ip.c_str()).c_str());
+}
+
+std::string Display::centerText(const char *string) {
+    std::string originalString(string);
+    std::stringstream buffer;
+    buffer << std::setw((int) (DISPLAY_WIDTH - originalString.size()) / 2) << " ";
+    buffer << originalString;
+    return buffer.str();
+
+}
+
+
 
 
 

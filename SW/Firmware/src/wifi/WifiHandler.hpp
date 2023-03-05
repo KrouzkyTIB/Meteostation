@@ -4,8 +4,10 @@
 
 #ifndef FIRMWARE_WIFIHANDLER_HPP
 #define FIRMWARE_WIFIHANDLER_HPP
+
 #include <ESP8266WiFi.h>
 #include <string>
+#include "display/Display.hpp"
 
 
 class WifiHandler {
@@ -16,15 +18,22 @@ private:
     std::string ssid;
     std::string password;
     bool connectedToWifi;
+    Display &display;
 
 private:
     void waitUntilConnectedToWifi();
+    void showWifiSettings();
+
 public:
     void init();
     void setNewConfig(const std::string &newSsid, const std::string &newPassword);
-    WifiHandler();
+
+    explicit WifiHandler(Display &display);
+    WifiHandler() = delete;
 
     [[nodiscard]] bool isConnectedToWifi() const;
+
+    [[nodiscard]] std::string getIp() const;
 };
 
 
