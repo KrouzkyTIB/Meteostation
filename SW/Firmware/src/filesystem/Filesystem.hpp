@@ -14,6 +14,7 @@ namespace filesystem{
     std::string readFile(const char * filename);
     bool doesFileExists(const char * filename);
     void saveLinesToFile(const char * filename, std::vector<std::string> &lines);
+    void deleteFile(const char * name);
 }
 
 

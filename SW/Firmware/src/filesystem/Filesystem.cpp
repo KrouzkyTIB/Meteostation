@@ -58,3 +58,7 @@ void filesystem::saveLinesToFile(const char *filename, std::vector<std::string> 
     file.flush();
     file.close();
 }
+
+void filesystem::deleteFile(const char * name){
+    LittleFS.remove(name);
+}

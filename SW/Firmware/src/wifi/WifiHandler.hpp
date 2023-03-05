@@ -27,6 +27,7 @@ private:
 public:
     void init();
     void setNewConfig(const std::string &newSsid, const std::string &newPassword);
+    void resetSettings();
 
     explicit WifiHandler(Display &display);
     WifiHandler() = delete;

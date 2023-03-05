@@ -48,6 +48,7 @@ void ServerWrapper::init(WifiHandler *wifiHandler, Sensor *indoorSensor, Sensor 
     webServer.on("/stats.css", HTTPMethod::HTTP_GET, serveStatsCss);
     webServer.on("/wifiConfig.css", HTTPMethod::HTTP_GET, serveConfigCss);
     webServer.on("/toggle-lcd", HTTPMethod::HTTP_POST, toggleDisplayBacklight);
+    webServer.on("/reset-wifi", HTTPMethod::HTTP_POST, handleResetWifi);
     webServer.begin();
 }
 
@@ -115,6 +116,10 @@ void ServerWrapper::setWifiCredentials() {
 void ServerWrapper::toggleDisplayBacklight() {
     display->toggleBacklight();
     webServer.send(204, "application/json", "");
+}
+
+void ServerWrapper::handleResetWifi() {
+    wifiHandler->resetSettings();
 }
 
 

@@ -10,7 +10,8 @@
 
 #define WIFI_CONFIG_FILE "wifi_config"
 #define SOFT_AP_SSID "TIB_meteo"
-#define LOCAL_WIFI_LABEL "Local IP"
+#define RESETTING_WIFI_LABEL_UPPER "Resetting"
+#define RESETTING_WIFI_LABEL_LOWER "settings"
 #define DEFAULT_WIFI_LABEL "TIB meteo"
 #define CONNECTED_LABEL "Connected!"
 #define CONNECTING_LABEL_UPPER "Connecting to"
@@ -92,6 +93,14 @@ void WifiHandler::showWifiSettings() {
     } else {
         display.showIpWithLabel(getIp(), DEFAULT_WIFI_LABEL);
     }
+}
+
+void WifiHandler::resetSettings() {
+    display.showMessage(RESETTING_WIFI_LABEL_UPPER, RESETTING_WIFI_LABEL_UPPER);
+    filesystem::deleteFile(WIFI_CONFIG_FILE);
+    this->connectedToWifi = false;
+    WiFi.disconnect(true);
+    this->init();
 }
 
 

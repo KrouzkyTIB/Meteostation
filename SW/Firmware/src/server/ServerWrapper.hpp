@@ -34,6 +34,7 @@ private:
     static void setWifiCredentials();
     static void replace(std::string &buffer, std::string pattern, std::string newValue);
     static void toggleDisplayBacklight();
+    static void handleResetWifi();
 public:
     static void init(WifiHandler *wifiHandler, Sensor *indoorSensor, Sensor *outdoorSensor, Display *display);
     static void handleClient();
