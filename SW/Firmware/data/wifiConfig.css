@@ -1,0 +1,59 @@
+h1 {
+    text-align: center;
+    font-size: 50px;
+}
+h2{
+    font-size: 30px;
+    letter-spacing: 0.01em;
+    text-align: center;
+    width: 100%;
+}
+
+div.form-center-wrapper {
+    text-align: center;
+    width: 100%;
+    margin: auto;
+}
+label{
+    font-size: 23px;
+    margin-bottom: 5px;
+}
+
+
+input{
+    width: 15vw;
+    height: 40px;
+    font-size: 20px;
+    margin-bottom: 2vh;
+    border-radius: 5px;
+    border: 1px solid black;
+    transition-duration: 0.3s;
+}
+input:hover{
+    background-color: lightblue;
+}
+input:focus{
+    background-color: lightblue;
+}
+
+button{
+    text-align: center;
+    width: 10vw;
+    margin-bottom: 1vh;
+    outline: none;
+    border: black 1px solid;
+    background-color: white;
+    font-size: 20px;
+    height: 40px;
+    border-radius: 15px;
+    transition-duration: 0.2s;
+}
+button:hover{
+    background-color: black;
+    color: white;
+}
+
+button:active{
+    color: black;
+    background-color: lightblue;
+}

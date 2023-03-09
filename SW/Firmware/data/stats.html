@@ -1,0 +1,49 @@
+<meta charset="UTF-8">
+<html lang="cs">
+<head>
+    <script src="stats.js"></script>
+    <link rel="stylesheet" href="stats.css"></link>
+</head>
+
+<body>
+<h1>
+    T.I.B Meteostanice
+</h1>
+<div class="data-wrapper indoor">
+    <h2>
+        Vnitřní hodnoty
+    </h2>
+    <div class="paragraph-center-wrapper">
+        <p>
+            Teplota: <%=indoorTemperature%>˚C
+            <br>
+            Vlhkost: <%=indoorHumidity%>%
+        </p>
+    </div>
+
+
+</div>
+<div class="data-wrapper outdoor">
+    <h2>
+        Venkovní hodnoty
+    </h2>
+    <div class="paragraph-center-wrapper">
+        <p>
+            Teplota: <%=outdoorTemperature%>˚C
+            <br>
+            Vlhkost: <%=outdoorHumidity%>%
+        </p>
+    </div>
+</div>
+<div class="settings-buttons-wrapper">
+    <button class="set-status-button <%=lcdBacklightStatus%>" onclick="toggleLcdBacklight()">
+        <%=lcdBacklight%>
+    </button>
+    <br>
+    <button class="set-status-button" onclick="resetWifi()">
+        Reset Wi-Fi Nastavení
+    </button>
+</div>
+
+</body>
+</html>
